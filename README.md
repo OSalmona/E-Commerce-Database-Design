@@ -123,9 +123,52 @@ from products as P
 where P.name like '%camera%'
 or P.description like '%camera%'
 ```
+
 ## 📅 query to suggest popular products in the same category for the same author, excluding the Purchsed product from the recommendations?
 ```mysql
 
 ```
+---
+## 📚 Special Case :: Customer want to look for tha past order history 
+#1- Traditional Approach
+```mysql
+    select  *
+    from Order AS O
+    JOIN Customer AS C ON O.customer_id = C.customer_id
+    JOIN OrderDeatils AS OD on O.order_id = OD.order_id
+    where C.customer_id = 122
+```
+note : in large scale od data this approach will be heavy and take alot of time to execute 
+---
+#2- Using Denormalization Techniques
+rather than denormalize the entire database , a more common technique is to pre-compute the result of the join for all customers ,
+then copy that result into a separata denomalized table 
+so we might create a table that looked something like this:
+
+```mysql
+CREATE TABLE SaleHistory (
+ customer_id INT ,
+ first_name VARCHAR(50) NOT NULL,
+ last_name VARCHAR(50) NOT NULL,
+ address VARCHAR(100),
+ description VARCHAR(100),
+ price INT,
+ category_id INT,
+ name VARCHAR(255) NOT NULL,
+ description TEXT,
+ price DECIMAL(10, 2) NOT NULL,
+ order_id INT NOT NULL,
+ order_detail_id SERIAL PRIMARY KEY ,
+ order_date TIMESTAMP NOT NULL,
+ quantity INT NOT NULL,
+ amount DECIMAL(10, 2) NOT NULL
+);
+```
+All we need to do now is ensure that we refresh the SALE_HISTORY table at regular 
+intervals to capture new sales. We can achieve this using something called a trigger
+Note: Trigger will be triggered on 
+-  Insert new record
+-  Update existing record
+
 
 
