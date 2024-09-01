@@ -130,7 +130,7 @@ or P.description like '%camera%'
 ```
 ---
 ## 📚 Special Case :: Customer want to look for tha past order history 
-#1- Traditional Approach
+#### 1- Traditional Approach
 ```mysql
     select  *
     from Order AS O
@@ -140,7 +140,7 @@ or P.description like '%camera%'
 ```
 note : in large scale od data this approach will be heavy and take alot of time to execute 
 ---
-#2- Using Denormalization Techniques
+#### 2- Using Denormalization Techniques
 rather than denormalize the entire database , a more common technique is to pre-compute the result of the join for all customers ,
 then copy that result into a separata denomalized table 
 so we might create a table that looked something like this:
